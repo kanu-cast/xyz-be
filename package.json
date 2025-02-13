@@ -4,9 +4,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "ts-node-dev --respawn --transpileOnly src/server.ts",
+    "build": "npx tsc",
+    "start": "node ./dist/server.js",
+    "dev": "npm run demigratedev && npm run migrate &&  npm run seed:all && npx tsc && nodemon ./dist/server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "sequelize": "NODE_ENV=development npx sequelize-cli --config=config/config.ts"
+    "sequelize": "NODE_ENV=development npx sequelize-cli --config=config/config.ts",
+    "seed:all": "sequelize db:seed:all",
+    "migrate": "npx sequelize db:migrate",
+    "demigratedev": "npx sequelize db:migrate:undo:all",
+    "demigrate": "npx sequelize db:migrate:undo:all --env test"
   },
   "lint-staged": {
     "*.ts": "prettier --write",
