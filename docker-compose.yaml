@@ -1,0 +1,30 @@
+version: "3.8"
+
+services:
+  backend:
+    build: .
+    container_name: kanucast/xyz-backend
+    ports:
+      - "${PORT:-3000}:3000"
+    depends_on:
+      - db
+    env_file:
+      - .env
+    volumes:
+      - .:/app
+      - /app/node_modules
+    restart: unless-stopped
+
+  db:
+    image: postgres:15-alpine
+    container_name: xyz_postgres
+    restart: always
+    env_file:
+      - .env
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
