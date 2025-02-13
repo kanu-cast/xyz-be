@@ -6,7 +6,8 @@ class DamageReport extends Model {
   public item_id!: string;
   public reported_by!: string;
   public report_date!: Date;
-  public status!: "Pending" | "Under Repair" | "Repaired" | "Disposed";
+  public damage_reason!: string;
+  public status!: "Pending" | "Repaired" | "Disposed";
 }
 
 DamageReport.init(
@@ -34,12 +35,16 @@ DamageReport.init(
       },
       onDelete: "CASCADE"
     },
+    damage_reason: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
     report_date: {
       type: DataTypes.DATE,
       defaultValue: DataTypes.NOW
     },
-    status: {
-      type: DataTypes.ENUM("Pending", "Under Repair", "Repaired", "Disposed"),
+    repair_status: {
+      type: DataTypes.ENUM("Pending", "Repaired", "Disposed"),
       defaultValue: "Pending"
     }
   },
