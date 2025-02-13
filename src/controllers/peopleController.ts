@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
 import { PeopleService } from "../services/peopleService";
 import { getPaginationOptions } from "../utils/pagination";
+import Person from "../models/Person.models";
+import { sendResponse } from "../utils/sendResponse";
 
 const peopleService = new PeopleService();
 
@@ -29,27 +31,37 @@ export const getAllPeople = async (req: Request, res: Response) => {
 
 export const getPersonById = async (req: Request, res: Response) => {
   try {
-    const person = await peopleService.getPersonById(req.params.id);
+    const person = await Person.findByPk(req.params.id);
     if (!person) {
-      return res.status(404).json({ message: "Person not found" });
+      return sendResponse(res, 404, "Person not found", null, [
+        "Person not found"
+      ]);
     }
-    res.status(200).json(person);
+    sendResponse(res, 200, "Person retrieved successfully", person);
   } catch (error) {
-    res.status(500).json({ message: "Error fetching person" });
+    sendResponse(res, 500, "Failed to retrieve person", null, [
+      "Internal server error"
+    ]);
   }
 };
 
 export const updatePerson = async (req: Request, res: Response) => {
   try {
-    const updatedPerson = await peopleService.updatePerson(
-      req.params.id,
-      req.body
-    );
-    if (!updatedPerson) {
-      return res.status(404).json({ message: "Person not found" });
+    const person = await Person.findByPk(req.params.id);
+    if (!person) {
+      // Use sendResponse and return to stop execution
+      return sendResponse(res, 404, "Person not found", null, [
+        "Person not found"
+      ]);
     }
-    res.status(200).json(updatedPerson);
+
+    const updatedPerson = await person.update(req.body);
+    // Use sendResponse without returning
+    sendResponse(res, 200, "Person updated successfully", updatedPerson);
   } catch (error) {
-    res.status(500).json({ message: "Error updating person" });
+    // Use sendResponse without returning
+    sendResponse(res, 500, "Failed to update person", null, [
+      "Internal server error"
+    ]);
   }
 };

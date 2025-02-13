@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
 import { SystemLogsService } from "../services/systemLogsService";
 import { getPaginationOptions } from "../utils/pagination";
+import SystemLog from "../models/SystemLog.models";
+import { sendResponse } from "../utils/sendResponse";
 
 const systemLogsService = new SystemLogsService();
 
@@ -20,12 +22,16 @@ export const getAllSystemLogs = async (req: Request, res: Response) => {
 
 export const getSystemLogById = async (req: Request, res: Response) => {
   try {
-    const log = await systemLogsService.getSystemLogById(req.params.id);
+    const log = await SystemLog.findByPk(req.params.id);
     if (!log) {
-      return res.status(404).json({ message: "System log not found" });
+      return sendResponse(res, 404, "System log not found", null, [
+        "System log not found"
+      ]);
     }
-    res.status(200).json(log);
+    sendResponse(res, 200, "Log found successfully", log);
   } catch (error) {
-    res.status(500).json({ message: "Error fetching system log" });
+    sendResponse(res, 500, "Error fetching system log", null, [
+      "Internal server error"
+    ]);
   }
 };

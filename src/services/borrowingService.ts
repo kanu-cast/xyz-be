@@ -1,5 +1,5 @@
 import Borrowing from "../models/Borrowing.models";
-
+import { Op } from "sequelize";
 export class BorrowingService {
   async createBorrowing(borrowingData: any) {
     return await Borrowing.create(borrowingData);
@@ -25,6 +25,7 @@ export class BorrowingService {
 
   async getOverdueBorrowings() {
     return await Borrowing.findAll({
+      //@ts-ignore
       where: {
         returned_at: null,
         expected_return_date: { [Op.lt]: new Date() } // Op.lt = less than

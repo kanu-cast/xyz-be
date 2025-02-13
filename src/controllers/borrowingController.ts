@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
 import { BorrowingService } from "../services/borrowingService";
 import { getPaginationOptions } from "../utils/pagination";
+import Borrowing from "../models/Borrowing.models";
+import { sendResponse } from "../utils/sendResponse";
 
 const borrowingService = new BorrowingService();
 
@@ -29,28 +31,35 @@ export const getAllBorrowings = async (req: Request, res: Response) => {
 
 export const getBorrowingById = async (req: Request, res: Response) => {
   try {
-    const borrowing = await borrowingService.getBorrowingById(req.params.id);
+    const borrowing = await Borrowing.findByPk(req.params.id);
     if (!borrowing) {
-      return res.status(404).json({ message: "Borrowing record not found" });
+      // Use sendResponse and return to stop execution
+      return sendResponse(res, 404, "Borrowing record not found", null, [
+        "Borrowing record not found"
+      ]);
     }
-    res.status(200).json(borrowing);
+    sendResponse(res, 200, "Person updated successfully", borrowing);
   } catch (error) {
-    res.status(500).json({ message: "Error fetching borrowing record" });
+    // Use sendResponse without returning
+    sendResponse(res, 500, "Error fetching borrowing record", null, [
+      "Internal server error"
+    ]);
   }
 };
 
 export const returnBorrowedItem = async (req: Request, res: Response) => {
   try {
-    const returnedBorrowing = await borrowingService.returnBorrowedItem(
-      req.params.id,
-      req.body
-    );
+    const returnedBorrowing = await Borrowing.findByPk(req.params.id);
     if (!returnedBorrowing) {
-      return res.status(404).json({ message: "Borrowing record not found" });
+      return sendResponse(res, 404, "Borrowing record not found", null, [
+        "Borrowing record not found"
+      ]);
     }
-    res.status(200).json(returnedBorrowing);
+    sendResponse(res, 200, "Person updated successfully", returnedBorrowing);
   } catch (error) {
-    res.status(500).json({ message: "Error returning borrowed item" });
+    sendResponse(res, 500, "Error returning borrowed item", null, [
+      "Internal server error"
+    ]);
   }
 };
 
