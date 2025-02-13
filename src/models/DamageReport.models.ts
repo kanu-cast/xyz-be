@@ -67,12 +67,5 @@ DamageReport.init(
     tableName: "damageReports"
   }
 );
-console.log(User); // Should log a Sequelize model class
-console.log(InventoryItem); // Should log a Sequelize model class
-console.log(Borrowing);
-
-// DamageReport.belongsTo(User, { foreignKey: "reported_by" });
-// DamageReport.belongsTo(InventoryItem, { foreignKey: "item_id" });
-// DamageReport.belongsTo(Borrowing, { foreignKey: "borrowing_id" });
 
 export default DamageReport;

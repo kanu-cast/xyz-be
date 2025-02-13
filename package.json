@@ -4,16 +4,18 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "npm run demigratedev && npm run migrate &&  npm run seed && npx tsc && ts-node-dev  ./src/server.ts --respawn --transpileOnly",
+    "start": "npm run migrate && npm run seedactions && npm run seedusers && npx tsc && node ./dist/server.js",
     "dev": " npm run demigratedev && npm run migrate &&  npm run seed:all && npx tsc && node ./dist/server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "sequelize": "NODE_ENV=development npx sequelize-cli --config=config/config.ts",
-    "migratedev": "npm run demigratedev && npx sequelize-cli db:migrate --name 20250213015531-create-users.js && npx sequelize-cli db:seed --seed 20250213015728-demo-users.js &&  npx sequelize-cli db:migrate --name 20250213015020-create-actions.js &&  npx sequelize-cli db:seed --seed 20250213015213-demo-actions.js",
+    "migratedev": "npm run demigratedev && npx sequelize-cli db:migrate --name 20250213015531-create-users.js &&  &&  npx sequelize-cli db:migrate --name 20250213015020-create-actions.js && ",
     "migrate": "npx sequelize db:migrate",
     "demigratedev": "npx sequelize db:migrate:undo:all",
     "migratetest": "npx sequelize db:migrate --env test",
     "seed:all": "sequelize db:seed:all",
     "seed": "npm run demigratedev && npm run migratedev",
+    "seedusers": "npx sequelize-cli db:seed --seed 20250213015728-demo-users.js",
+    "seedactions": "npx sequelize-cli db:seed --seed 20250213015213-demo-actions.js",
     "demigrate": "npx sequelize db:migrate:undo:all"
   },
   "lint-staged": {
