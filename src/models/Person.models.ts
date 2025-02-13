@@ -1,8 +1,28 @@
-// Model: People (Trainees & Employees)
-import { DataTypes, Model } from "sequelize";
+import { DataTypes, Model, Optional } from "sequelize";
 import { sequelize } from "../config/db.config";
+import User from "./User.models";
 
-class Person extends Model {
+interface PersonAttributes {
+  person_id: string;
+  full_name: string;
+  national_id: string;
+  email: string;
+  phone_number: string;
+  residence: string;
+  assurer_name?: string;
+  assurer_contact?: string;
+  role: "trainee" | "employee";
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
+export interface PersonCreationAttributes
+  extends Optional<PersonAttributes, "person_id"> {}
+
+class Person
+  extends Model<PersonAttributes, PersonCreationAttributes>
+  implements PersonAttributes
+{
   public person_id!: string;
   public full_name!: string;
   public national_id!: string;
@@ -11,6 +31,9 @@ class Person extends Model {
   public residence!: string;
   public assurer_name?: string;
   public assurer_contact?: string;
+  public role!: "trainee" | "employee";
+  public readonly createdAt!: Date;
+  public readonly updatedAt!: Date;
 }
 
 Person.init(
@@ -48,14 +71,17 @@ Person.init(
     assurer_contact: {
       type: DataTypes.STRING(15),
       allowNull: true
+    },
+    role: {
+      type: DataTypes.ENUM("trainee", "employee"),
+      allowNull: false
     }
   },
   {
     sequelize,
-    modelName: "Person",
-    tableName: "People",
-    timestamps: false
+    modelName: "Person"
   }
 );
 
+Person.belongsTo(User, { foreignKey: "created_by" });
 export default Person;
