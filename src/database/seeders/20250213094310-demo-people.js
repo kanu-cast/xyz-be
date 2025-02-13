@@ -3,7 +3,7 @@
 // People Seeder
 module.exports = {
   up: async (queryInterface) => {
-    await queryInterface.bulkInsert("People", [
+    await queryInterface.bulkInsert("peoples", [
       {
         person_id: "d3c8a9cf-1234-5678-9101-abcdefabcdef", // Borrower (Trainee)
         full_name: "Lilliane Uwase",
@@ -12,11 +12,12 @@ module.exports = {
         phone_number: "1122334455",
         residence: "Kigali, Rwanda",
         assurer_name: "Igire Rwanda",
-        assurer_contact: "6677889900"
+        assurer_contact: "6677889900",
+        role: "trainee"
       }
     ]);
   },
   down: async (queryInterface) => {
-    await queryInterface.bulkDelete("People", null, {});
+    await queryInterface.bulkDelete("peoples", null, {});
   }
 };

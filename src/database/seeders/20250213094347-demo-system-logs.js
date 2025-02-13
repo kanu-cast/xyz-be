@@ -2,7 +2,7 @@
 // Seeder file for system_logs
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.bulkInsert("system_logs", [
+    await queryInterface.bulkInsert("systemLogs", [
       {
         log_id: "f9e8a9cf-1234-5678-9101-abcdefabcdef",
         user_id: "b1a8a9cf-1234-5678-9101-abcdefabcdef", // the admin, so far we have 1 admin
@@ -26,6 +26,6 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.bulkDelete("system_logs", null, {});
+    await queryInterface.bulkDelete("systemLogs", null, {});
   }
 };

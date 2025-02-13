@@ -1,4 +1,4 @@
-import { DataTypes, Model, Optional } from "sequelize";
+import { DataTypes, Model, Optional, Sequelize } from "sequelize";
 import { sequelize } from "../config/db.config";
 import Borrowing from "./Borrowing.models";
 import SystemLog from "./SystemLog.models";
@@ -22,6 +22,9 @@ class User
   extends Model<UserAttributes, UserCreationAttributes>
   implements UserAttributes
 {
+  static initialize(sequelize: Sequelize) {
+    throw new Error("Method not implemented.");
+  }
   public user_id!: string;
   public name!: string;
   public email!: string;
@@ -36,7 +39,8 @@ User.init(
     user_id: {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
-      primaryKey: true
+      primaryKey: true,
+      unique: true
     },
     name: {
       type: DataTypes.STRING,
@@ -58,12 +62,9 @@ User.init(
   },
   {
     sequelize,
-    modelName: "User"
+    modelName: "User",
+    tableName: "users"
   }
 );
-User.hasMany(Borrowing, { foreignKey: "user_id" });
-User.hasMany(SystemLog, { foreignKey: "user_id" });
-User.hasMany(DamageReport, { foreignKey: "reported_by" });
-User.hasMany(Person, { foreignKey: "created_by" });
 
 export default User;

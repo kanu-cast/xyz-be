@@ -29,4 +29,9 @@ export const dbConnect = () => {
     .authenticate()
     .then(() => console.log(`Connected to ${env} database 🚀`))
     .catch((err) => console.error("Database connection error:", err));
+
+  // Sync models with the database
+  sequelize.sync({}).then(() => {
+    console.log("Database synchronized");
+  });
 };

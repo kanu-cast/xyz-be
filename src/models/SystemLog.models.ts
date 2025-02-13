@@ -19,7 +19,8 @@ SystemLog.init(
     log_id: {
       type: DataTypes.UUID,
       defaultValue: uuidv4,
-      primaryKey: true
+      primaryKey: true,
+      unique: true
     },
     user_id: {
       type: DataTypes.UUID,
@@ -34,7 +35,7 @@ SystemLog.init(
     item_id: {
       type: DataTypes.UUID,
       allowNull: true,
-      references: { model: "InventoryItems", key: "item_id" }
+      references: { model: "InventoryItem", key: "item_id" }
     },
     borrow_id: {
       type: DataTypes.UUID,
@@ -44,7 +45,7 @@ SystemLog.init(
     damage_id: {
       type: DataTypes.UUID,
       allowNull: true,
-      references: { model: "DamageReports", key: "damage_id" }
+      references: { model: "damageReports", key: "damage_id" }
     },
     timestamp: {
       type: DataTypes.DATE,
@@ -54,12 +55,10 @@ SystemLog.init(
   },
   {
     sequelize,
-    tableName: "system_logs",
+    modelName: "SystemLog",
+    tableName: "systemLogs",
     timestamps: false
   }
 );
-SystemLog.belongsTo(User, { foreignKey: "user_id" });
-SystemLog.belongsTo(InventoryItem, { foreignKey: "item_id" });
-SystemLog.belongsTo(Action, { foreignKey: "action_id" });
 
 export default SystemLog;

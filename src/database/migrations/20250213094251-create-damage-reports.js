@@ -1,18 +1,19 @@
 // Migration for Damage Reports Table
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable("DamageReports", {
+    await queryInterface.createTable("damageReports", {
       damage_id: {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
         allowNull: false,
-        primaryKey: true
+        primaryKey: true,
+        unique: true
       },
       item_id: {
         type: Sequelize.UUID,
         allowNull: false,
         references: {
-          model: "InventoryItems",
+          model: "inventoryItems",
           key: "item_id"
         }
       },
@@ -20,7 +21,7 @@ module.exports = {
         type: Sequelize.UUID,
         allowNull: false,
         references: {
-          model: "Users",
+          model: "users",
           key: "user_id"
         }
       },
@@ -33,12 +34,12 @@ module.exports = {
         allowNull: false
       },
       repair_status: {
-        type: Sequelize.ENUM("Pending", "Under Repair", "Disposed"),
-        defaultValue: "Pending"
+        type: Sequelize.ENUM("pending", "under repair", "disposed"),
+        defaultValue: "pending"
       }
     });
   },
   down: async (queryInterface) => {
-    await queryInterface.dropTable("DamageReports");
+    await queryInterface.dropTable("damageReports");
   }
 };

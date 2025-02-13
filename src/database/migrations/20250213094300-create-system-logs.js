@@ -3,18 +3,19 @@
 // Migration file for system_logs
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable("system_logs", {
+    await queryInterface.createTable("systemLogs", {
       log_id: {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
         allowNull: false,
-        primaryKey: true
+        primaryKey: true,
+        unique: true
       },
       user_id: {
         type: Sequelize.UUID,
         allowNull: false,
         references: {
-          model: "Users",
+          model: "users",
           key: "user_id"
         },
         onUpdate: "CASCADE",
@@ -34,7 +35,7 @@ module.exports = {
         type: Sequelize.UUID,
         allowNull: true,
         references: {
-          model: "InventoryItems",
+          model: "inventoryItems",
           key: "item_id"
         },
         onUpdate: "CASCADE",
@@ -44,7 +45,7 @@ module.exports = {
         type: Sequelize.UUID,
         allowNull: true,
         references: {
-          model: "Borrowing",
+          model: "borrowings",
           key: "borrow_id"
         },
         onUpdate: "CASCADE",
@@ -54,7 +55,7 @@ module.exports = {
         type: Sequelize.UUID,
         allowNull: true,
         references: {
-          model: "DamageReports",
+          model: "damageReports",
           key: "damage_id"
         },
         onUpdate: "CASCADE",
@@ -69,6 +70,6 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable("system_logs");
+    await queryInterface.dropTable("systemLogs");
   }
 };

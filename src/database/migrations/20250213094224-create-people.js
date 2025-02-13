@@ -1,12 +1,13 @@
 // Migration for People Table
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable("People", {
+    await queryInterface.createTable("peoples", {
       person_id: {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
         allowNull: false,
-        primaryKey: true
+        primaryKey: true,
+        unique: true
       },
       full_name: {
         type: Sequelize.STRING,
@@ -36,10 +37,15 @@ module.exports = {
       assurer_contact: {
         type: Sequelize.STRING,
         allowNull: true
+      },
+      role: {
+        type: Sequelize.ENUM("trainee", "employee"),
+        allowNull: false,
+        allowNull: false
       }
     });
   },
   down: async (queryInterface) => {
-    await queryInterface.dropTable("People");
+    await queryInterface.dropTable("peoples");
   }
 };

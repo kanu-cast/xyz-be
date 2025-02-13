@@ -1,4 +1,4 @@
-import { DataTypes, Model, Optional } from "sequelize";
+import { DataTypes, Model, Optional, Sequelize } from "sequelize";
 import { sequelize } from "../config/db.config";
 import User from "./User.models";
 import InventoryItem from "./InventoryItem.models";
@@ -26,6 +26,9 @@ class Borrowing
   extends Model<BorrowingAttributes, BorrowingCreationAttributes>
   implements BorrowingAttributes
 {
+  static initialize(sequelize: Sequelize) {
+    throw new Error("Method not implemented.");
+  }
   public borrowing_id!: string;
   public user_id!: string;
   public item_id!: string;
@@ -45,7 +48,8 @@ Borrowing.init(
     borrowing_id: {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
-      primaryKey: true
+      primaryKey: true,
+      unique: true
     },
     user_id: {
       type: DataTypes.UUID,
@@ -93,11 +97,9 @@ Borrowing.init(
   },
   {
     sequelize,
-    modelName: "Borrowing"
+    modelName: "Borrowing",
+    tableName: "borrowings"
   }
 );
-Borrowing.belongsTo(User, { foreignKey: "user_id" });
-Borrowing.belongsTo(InventoryItem, { foreignKey: "item_id" });
-Borrowing.hasOne(DamageReport, { foreignKey: "borrowing_id" });
 
 export default Borrowing;
