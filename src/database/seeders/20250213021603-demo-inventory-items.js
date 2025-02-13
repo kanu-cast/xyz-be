@@ -1,16 +1,30 @@
-// Seeder: demo-inventory-items
-const { v4: uuidv4 } = require("uuid");
-
+// Inventory Item Seeder
 module.exports = {
   up: async (queryInterface) => {
     await queryInterface.bulkInsert("InventoryItems", [
       {
-        item_id: uuidv4(),
-        name: "Laptop",
+        item_id: "e4d8a9cf-1234-5678-9101-abcdefabcdef", // Laptop being borrowed
+        name: "Dell XPS 15",
         category: "Device",
-        serial_number: "SN123456789",
+        serial_number: "DELL12345",
         condition: "New",
+        status: "Borrowed",
+        created_at: new Date()
+      },
+      {
+        item_id: "e4d8a9cf-1234-4b78-9101-abcdef123456", // mop stick being returned
+        name: "mop stick",
+        category: "Cleaning Material",
+        condition: "Good",
         status: "Available",
+        created_at: new Date()
+      },
+      {
+        item_id: "a1b2c3d4-5678-4ef9-9101-123456789abc", // chair being borrowed
+        name: "chair",
+        category: "Furniture",
+        condition: "Worn Out",
+        status: "Borrowed",
         created_at: new Date()
       }
     ]);
