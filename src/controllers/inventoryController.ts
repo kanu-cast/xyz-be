@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
 import { InventoryService } from "../services/inventoryService";
 import { getPaginationOptions } from "../utils/pagination";
+import InventoryItem from "../models/InventoryItem.models";
+import { sendResponse } from "../utils/sendResponse";
 
 const inventoryService = new InventoryService();
 
@@ -29,41 +31,52 @@ export const getAllInventoryItems = async (req: Request, res: Response) => {
 
 export const getInventoryItemById = async (req: Request, res: Response) => {
   try {
-    const item = await inventoryService.getInventoryItemById(req.params.id);
+    const item = await InventoryItem.findByPk(req.params.id);
     if (!item) {
-      return res.status(404).json({ message: "Inventory item not found" });
+      return sendResponse(res, 404, "Inventory item not found", null, [
+        "Inventory item not found"
+      ]);
     }
-    res.status(200).json(item);
+    sendResponse(res, 200, "Inventory item retrieved successfully", item);
   } catch (error) {
-    res.status(500).json({ message: "Error fetching inventory item" });
+    sendResponse(res, 500, "Failed to retrieve inventory item", null, [
+      "Internal server error"
+    ]);
   }
 };
 
 export const updateInventoryItem = async (req: Request, res: Response) => {
   try {
-    const updatedItem = await inventoryService.updateInventoryItem(
-      req.params.id,
-      req.body
-    );
-    if (!updatedItem) {
-      return res.status(404).json({ message: "Inventory item not found" });
+    const item = await InventoryItem.findByPk(req.params.id);
+    if (!item) {
+      return sendResponse(res, 404, "Inventory item not found", null, [
+        "Inventory item not found"
+      ]);
     }
-    res.status(200).json(updatedItem);
+
+    const updatedItem = await item.update(req.body);
+    sendResponse(res, 200, "Inventory item updated successfully", updatedItem);
   } catch (error) {
-    res.status(500).json({ message: "Error updating inventory item" });
+    sendResponse(res, 500, "Failed to update inventory item", null, [
+      "Internal server error"
+    ]);
   }
 };
 
 export const deleteInventoryItem = async (req: Request, res: Response) => {
   try {
-    const deletedItem = await inventoryService.deleteInventoryItem(
-      req.params.id
-    );
-    if (!deletedItem) {
-      return res.status(404).json({ message: "Inventory item not found" });
+    const item = await InventoryItem.findByPk(req.params.id);
+    if (!item) {
+      return sendResponse(res, 404, "Inventory item not found", null, [
+        "Inventory item not found"
+      ]);
     }
-    res.status(200).json({ message: "Inventory item deleted successfully" });
+
+    await item.destroy();
+    sendResponse(res, 200, "Inventory item deleted successfully");
   } catch (error) {
-    res.status(500).json({ message: "Error deleting inventory item" });
+    sendResponse(res, 500, "Failed to delete inventory item", null, [
+      "Internal server error"
+    ]);
   }
 };

@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
 import { DamageReportsService } from "../services/damageReportsService";
 import { getPaginationOptions } from "../utils/pagination";
+import { sendResponse } from "../utils/sendResponse";
+import DamageReport from "../models/damageReport";
 
 const damageReportsService = new DamageReportsService();
 
@@ -29,29 +31,34 @@ export const getAllDamageReports = async (req: Request, res: Response) => {
 
 export const getDamageReportById = async (req: Request, res: Response) => {
   try {
-    const report = await damageReportsService.getDamageReportById(
-      req.params.id
-    );
+    const report = await DamageReport.findByPk(req.params.id);
     if (!report) {
-      return res.status(404).json({ message: "Damage report not found" });
+      return sendResponse(res, 404, "Damage report not found", null, [
+        "Damage report not found"
+      ]);
     }
-    res.status(200).json(report);
+    sendResponse(res, 200, "Damage report retrieved successfully", report);
   } catch (error) {
-    res.status(500).json({ message: "Error fetching damage report" });
+    sendResponse(res, 500, "Failed to retrieve damage report", null, [
+      "Internal server error"
+    ]);
   }
 };
 
 export const updateDamageReport = async (req: Request, res: Response) => {
   try {
-    const updatedReport = await damageReportsService.updateDamageReport(
-      req.params.id,
-      req.body
-    );
-    if (!updatedReport) {
-      return res.status(404).json({ message: "Damage report not found" });
+    const report = await DamageReport.findByPk(req.params.id);
+    if (!report) {
+      return sendResponse(res, 404, "Damage report not found", null, [
+        "Damage report not found"
+      ]);
     }
-    res.status(200).json(updatedReport);
+
+    const updatedReport = await report.update(req.body);
+    sendResponse(res, 200, "Damage report updated successfully", updatedReport);
   } catch (error) {
-    res.status(500).json({ message: "Error updating damage report" });
+    sendResponse(res, 500, "Failed to update damage report", null, [
+      "Internal server error"
+    ]);
   }
 };
