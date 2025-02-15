@@ -1,4 +1,4 @@
-import { DataTypes, Model, Optional } from "sequelize";
+import { DataTypes, Model, Optional, Sequelize } from "sequelize";
 import { sequelize } from "../config/db.config";
 import Borrowing from "./Borrowing.models";
 import DamageReport from "./DamageReport.models";
@@ -23,6 +23,9 @@ class InventoryItem
   extends Model<InventoryItemAttributes, InventoryItemCreationAttributes>
   implements InventoryItemAttributes
 {
+  static initialize(sequelize: Sequelize) {
+    throw new Error("Method not implemented.");
+  }
   public item_id!: string;
   public name!: string;
   public description!: string;
@@ -43,7 +46,8 @@ InventoryItem.init(
     item_id: {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
-      primaryKey: true
+      primaryKey: true,
+      unique: true
     },
     name: {
       type: DataTypes.STRING,
@@ -79,12 +83,9 @@ InventoryItem.init(
   },
   {
     sequelize,
-    modelName: "InventoryItem"
+    modelName: "InventoryItem",
+    tableName: "inventoryItems"
   }
 );
-
-InventoryItem.hasMany(Borrowing, { foreignKey: "item_id" });
-InventoryItem.hasMany(DamageReport, { foreignKey: "item_id" });
-InventoryItem.hasMany(SystemLog, { foreignKey: "item_id" });
 
 export default InventoryItem;

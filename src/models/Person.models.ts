@@ -41,7 +41,8 @@ Person.init(
     person_id: {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
-      primaryKey: true
+      primaryKey: true,
+      unique: true
     },
     full_name: {
       type: DataTypes.STRING,
@@ -54,7 +55,8 @@ Person.init(
     },
     email: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      unique: true
     },
     phone_number: {
       type: DataTypes.STRING(15),
@@ -79,9 +81,9 @@ Person.init(
   },
   {
     sequelize,
-    modelName: "Person"
+    modelName: "Person",
+    tableName: "peoples"
   }
 );
 
-Person.belongsTo(User, { foreignKey: "created_by" });
 export default Person;

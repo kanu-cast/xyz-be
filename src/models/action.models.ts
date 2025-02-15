@@ -1,6 +1,5 @@
 import { DataTypes, Model, Optional } from "sequelize";
 import { sequelize } from "../config/db.config";
-import SystemLog from "./SystemLog.models";
 
 interface ActionAttributes {
   action_id: string;
@@ -27,7 +26,8 @@ Action.init(
     action_id: {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
-      primaryKey: true
+      primaryKey: true,
+      unique: true
     },
     description: {
       type: DataTypes.STRING,
@@ -41,6 +41,5 @@ Action.init(
     tableName: "actions"
   }
 );
-Action.hasMany(SystemLog, { foreignKey: "action_id" });
 
 export default Action;

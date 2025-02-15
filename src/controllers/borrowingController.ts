@@ -38,7 +38,7 @@ export const getBorrowingById = async (req: Request, res: Response) => {
         "Borrowing record not found"
       ]);
     }
-    sendResponse(res, 200, "Person updated successfully", borrowing);
+    sendResponse(res, 200, "Borrowing updated successfully", borrowing);
   } catch (error) {
     // Use sendResponse without returning
     sendResponse(res, 500, "Error fetching borrowing record", null, [

@@ -1,7 +1,7 @@
 // Borrowing Seeder
 module.exports = {
   up: async (queryInterface) => {
-    await queryInterface.bulkInsert("Borrowing", [
+    await queryInterface.bulkInsert("borrowings", [
       {
         borrow_id: "987a9cf1-6543-5678-9101-fedcba567890", // Borrowing record
         item_id: "e4d8a9cf-1234-5678-9101-abcdefabcdef", // Dell XPS 15
@@ -11,13 +11,13 @@ module.exports = {
         expected_return_date: new Date(
           new Date().setDate(new Date().getDate() + 7)
         ),
-        initial_condition: "New",
+        initial_condition: "new",
         return_condition: null,
         is_overdue: false
       }
     ]);
   },
   down: async (queryInterface) => {
-    await queryInterface.bulkDelete("Borrowing", null, {});
+    await queryInterface.bulkDelete("borrowings", null, {});
   }
 };

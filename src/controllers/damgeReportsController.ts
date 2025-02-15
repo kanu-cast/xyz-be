@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { DamageReportsService } from "../services/damageReportsService";
 import { getPaginationOptions } from "../utils/pagination";
 import { sendResponse } from "../utils/sendResponse";
-import DamageReport from "../models/damageReport";
+import DamageReport from "../models/DamageReport.models";
 
 const damageReportsService = new DamageReportsService();
 
