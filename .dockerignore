@@ -1,0 +1,23 @@
+# Ignore node modules and dependencies
+node_modules
+npm-debug.log
+yarn-error.log
+pnpm-debug.log
+
+# Ignore local environment files
+.env
+.env.local
+.DS_Store
+
+# Ignore build outputs
+dist
+build
+
+# Ignore Docker-related files
+docker-compose.yml
+docker-compose.override.yml
+Dockerfile
+
+# Ignore logs
+logs
+*.log
